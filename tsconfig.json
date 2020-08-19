@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es5",
+    "lib": [
+      "es6"
+    ],
+    "types": [
+      "node"
+    ],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "include": [
+    "src/"
+  ]
+}

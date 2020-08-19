@@ -1,0 +1,9 @@
+# ide
+.idea
+.vscode
+
+# node
+node_modules
+
+# build artifacts
+dist/

@@ -1,0 +1,37 @@
+{
+  "name": "node-force-sync",
+  "version": "1.0.0",
+  "description": "Forces an async function to run synchronously using a separate node process",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint --ext .ts src/",
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.6.0",
+    "@typescript-eslint/parser": "^3.9.1",
+    "earljs": "^0.0.13",
+    "eslint": "^7.7.0",
+    "husky": "^4.2.5",
+    "mocha": "^8.1.1",
+    "standard-version": "^9.0.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tannerntannern/node-force-sync.git"
+  },
+  "author": "Tanner Nielsen",
+  "license": "MIT"
+}
