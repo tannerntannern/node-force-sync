@@ -8,11 +8,16 @@
     "sourceType": "module"
   },
   "extends": "eslint:recommended",
+  "plugins": [
+    "codegen"
+  ],
   "rules": {
     "no-undef": "off",
+    "no-unused-vars": "off",
     "indent": ["error", "tab"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
-    "eol-last": "error"
+    "eol-last": "error",
+    "codegen/codegen": "error"
   }
 }

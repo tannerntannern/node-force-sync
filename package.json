@@ -22,6 +22,7 @@
     "@typescript-eslint/parser": "^3.9.1",
     "earljs": "^0.0.13",
     "eslint": "^7.7.0",
+    "eslint-plugin-codegen": "^0.12.0",
     "husky": "^4.2.5",
     "mocha": "^8.1.1",
     "standard-version": "^9.0.0",
@@ -32,6 +33,11 @@
     "type": "git",
     "url": "git+https://github.com/tannerntannern/node-force-sync.git"
   },
+  "keywords": [
+    "async",
+    "force-sync",
+    "sync"
+  ],
   "author": "Tanner Nielsen",
   "license": "MIT"
 }
