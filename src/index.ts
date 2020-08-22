@@ -3,10 +3,7 @@ import { writeFileSync, unlinkSync } from 'fs';
 import { resolve } from 'path';
 import escapeStringRegex from 'escape-string-regexp';
 
-type AsyncFunc = (...args: any[]) => Promise<any>;
-
-type UnwrapPromise<T extends Promise<any>> =
-	T extends Promise<infer V> ? V : unknown;
+type Func<Args extends any[], Return extends any> = (...args: Args) => Return;
 
 export type ForceSyncConfig = {
 	tagOpenWrappers: [string, string],
@@ -16,7 +13,9 @@ export type ForceSyncConfig = {
 	debug: boolean,
 };
 
-export const forceSync = <F extends AsyncFunc>(asyncFunc: F, config?: Partial<ForceSyncConfig>) => {
+export function forceSync<A extends any[], R extends any>(asyncFunc: (...args: A) => Promise<R>, config?: Partial<ForceSyncConfig>): Func<A, R>;
+export function forceSync<A extends any[], R extends any>(funcStr: string, config?: Partial<ForceSyncConfig>): Func<A, R>;
+export function forceSync(func: string | Function, config?: Partial<ForceSyncConfig>): Function {
 	const {
 		tagOpenWrappers,
 		tagCloseWrappers,
@@ -26,8 +25,8 @@ export const forceSync = <F extends AsyncFunc>(asyncFunc: F, config?: Partial<Fo
 	} = defaults<ForceSyncConfig>(config ?? {}, {
 		tagOpenWrappers: ['!!!', '!!!'],
 		tagCloseWrappers: ['!!!/', '!!!'],
-		tmpFilePath: '.',
-		nodeExecutable: 'node',  // TODO: make default platform dependent
+		tmpFilePath: '.',		// TODO: default to `/tmp` on unix-like systems?
+		nodeExecutable: 'node',  // TODO: make default platform dependent?
 		debug: false,
 	});
 
@@ -36,10 +35,12 @@ export const forceSync = <F extends AsyncFunc>(asyncFunc: F, config?: Partial<Fo
 	const errorOpener = makeTag('ERROR', tagOpenWrappers);
 	const errorCloser = makeTag('ERROR', tagCloseWrappers);
 
-	return (...args: Parameters<F>): UnwrapPromise<ReturnType<F>> => {
+	const funcStr = (typeof func === 'string') ? func : Function.prototype.toString.apply(func);
+
+	return (...args: any[]) => {
 		const argsString = args.map(arg => JSON.stringify(arg)).join(', ');
 		const codeString =
-`(${Function.prototype.toString.call(asyncFunc)})(${argsString})
+`(${funcStr})(${argsString})
 	.then(function(output) {
 		console.log('${outputOpener}' + JSON.stringify(output) + '${outputCloser}');
 	})
@@ -66,7 +67,9 @@ export const forceSync = <F extends AsyncFunc>(asyncFunc: F, config?: Partial<Fo
 		}
 
 		const output = extractOutput(rawOutput, outputOpener, outputCloser);
-		const error = extractOutput(rawOutput, errorOpener, errorCloser);
+		let error = null;
+		if (output === null)
+			error = extractOutput(rawOutput, errorOpener, errorCloser);
 
 		if (debug) {
 			console.info('Extracted output:');
@@ -81,10 +84,10 @@ export const forceSync = <F extends AsyncFunc>(asyncFunc: F, config?: Partial<Fo
 
 		return JSON.parse(output as string) as any;
 	};
-};
+}
 
 const extractOutput = (rawOutput: string, openTag: string, closeTag: string) =>
-	new RegExp(`${escapeStringRegex(openTag)}([\\s\\S]+)${escapeStringRegex(closeTag)}`).exec(rawOutput)?.[1] ?? null;
+	new RegExp(`${escapeStringRegex(openTag)}([\\s\\S]*)${escapeStringRegex(closeTag)}`).exec(rawOutput)?.[1] ?? null;
 
 const makeTag = (middle: string, [beginning, ending]: [string, string]) =>
 	beginning + middle + ending;
