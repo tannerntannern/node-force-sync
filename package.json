@@ -13,7 +13,9 @@
     "lint": "eslint --ext .ts src/",
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "escape-string-regexp": "^4.0.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.2",
