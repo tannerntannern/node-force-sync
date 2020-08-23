@@ -67,7 +67,7 @@ export function forceSync(func: string | Function, config?: Partial<ForceSyncCon
 		}
 
 		const output = extractOutput(rawOutput, outputOpener, outputCloser);
-		let error = null;
+		let error: string | null = null;
 		if (output === null)
 			error = extractOutput(rawOutput, errorOpener, errorCloser);
 
@@ -81,6 +81,9 @@ export function forceSync(func: string | Function, config?: Partial<ForceSyncCon
 		const isError = error !== null || (output === null && error === null);
 		if (isError)
 			throw new Error('' + error);
+		
+		if (output === 'undefined')
+			return;
 
 		return JSON.parse(output as string) as any;
 	};
