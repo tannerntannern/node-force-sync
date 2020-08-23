@@ -1,6 +1,6 @@
 {
   "name": "node-force-sync",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Forces an async function to run synchronously using a separate node process",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "lint": "eslint --ext .ts src/",
+    "lint": "eslint --ext .ts,.md .",
+    "codegen": "yarn lint --rule \"codegen/codegen: error\" --fix",
     "test": "mocha"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "earljs": "^0.0.13",
     "eslint": "^7.7.0",
     "eslint-plugin-codegen": "^0.12.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
     "mocha": "^8.1.1",
     "standard-version": "^9.0.0",
