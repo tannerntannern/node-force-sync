@@ -11,6 +11,6 @@ describe('README #Usage example', () => {
 		const mySyncFunc = forceSync(myAsyncFunc);
 
 		mySyncFunc(1, 2, 3);
-		// endblock
+		// endblock: usage
 	});
 });

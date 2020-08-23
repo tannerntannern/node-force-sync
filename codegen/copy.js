@@ -8,7 +8,7 @@ module.exports = ({ meta, options }) => {
 	const destPrefix = unescape(options.destPrefix || '```\n');
 	const destPostfix = unescape(options.destPostfix || '\n```');
 	const replace = options.replace || {};
-	const lint = options.lint || srcFile.endsWith('.js') || srcFile.endsWith('.ts');
+	const lint = options.lint === undefined && (srcFile.endsWith('.js') || srcFile.endsWith('.ts')) || options.lint == true;
 	const trim = options.trim || true;
 
 	if (!srcFile)
@@ -67,16 +67,16 @@ const extractBlock = (content, blockName) => {
 };
 
 const extractBlockStyle1 = (content, blockName) =>
-	matchGroup('<!--\\s*block:\\s*' + blockName + '\\s*-->([\\s\\S]*)<!--\\s*endblock\\s*-->', 1)(content);
+	matchGroup('<!--\\s*block:\\s*' + blockName + '\\s*-->([\\s\\S]*)<!--\\s*endblock:\\s*' + blockName + '\\s*-->', 1)(content);
 
 const extractBlockStyle2 = (content, blockName) =>
-	matchGroup('\\#\\s*block:\\s*' + blockName + '\\s*([\\s\\S]*)\\#\\s*endblock', 1)(content);
+	matchGroup('\\#\\s*block:\\s*' + blockName + '\\s*([\\s\\S]*)\\#\\s*endblock:\\s*' + blockName, 1)(content);
 
 const extractBlockStyle3 = (content, blockName) =>
-	matchGroup('\\/\\/\\s*block:\\s*' + blockName + '\\s*([\\s\\S]*)\\/\\/\\s*endblock', 1)(content);
+	matchGroup('\\/\\/\\s*block:\\s*' + blockName + '\\s*([\\s\\S]*)\\/\\/\\s*endblock:\\s*' + blockName, 1)(content);
 
 const extractBlockStyle4 = (content, blockName) =>
-	matchGroup('\\/\\*\\s*block:\\s*' + blockName + '\\s*\\*\\/([\s\S]*)\\/\\*\\s*endblock\\s*\\*\\/', 1)(content);
+	matchGroup('\\/\\*\\s*block:\\s*' + blockName + '\\s*\\*\\/([\s\S]*)\\/\\*\\s*endblock:\\s*' + blockName + '\\s*\\*\\/', 1)(content);
 
 const matchGroup = (regexStr, groupNumber) => (content) => {
 	const match = new RegExp(regexStr).exec(content);
