@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "target": "es5",
+    "target": "es2017",
     "lib": [
       "es6"
     ],
@@ -11,6 +10,8 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": false,
     "sourceMap": false,
     "declaration": true,
     "outDir": "dist"

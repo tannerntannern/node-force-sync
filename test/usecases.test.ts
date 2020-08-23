@@ -13,29 +13,29 @@ describe('forceSync', () => {
 		});
 	
 		it('works with a function with numeric args and return value', () => {
-			const addAsync = (a: number, b: number) => Promise.resolve(a + b);
+			const addAsync = async (a: number, b: number) => a + b;
 			const addSync = forceSync(addAsync);
 	
 			expect(addSync(1, 2)).toEqual(3);
 		});
 	
 		it('works with complex arguments and return value', () => {
-			const combineAsync = <T1, T2>(a: T1, b: T2): Promise<T1 & T2> =>
-				Promise.resolve(Object.assign({}, a, b));
+			const combineAsync = async <T1, T2>(a: T1, b: T2): Promise<T1 & T2> =>
+				Object.assign({}, a, b);
 			const combineSync = forceSync(combineAsync);
 	
 			expect(combineSync({ firstName: 'Billy' }, { lastName: 'Bob' })).toEqual({ firstName: 'Billy', lastName: 'Bob' });
 		});
 	
 		it('works with custom tag wrappers', () => {
-			const getWackyValueAsync = () => Promise.resolve('!!!OUTPUT!!!');
+			const getWackyValueAsync = async () => '!!!OUTPUT!!!';
 			const getWackyValueSync = forceSync(getWackyValueAsync, { tagOpenWrappers: ['<', '>'], tagCloseWrappers: ['</', '>'] });
 	
 			expect(getWackyValueSync()).toEqual('!!!OUTPUT!!!');
 		});
 	
 		it('works when the async function throws an error', () => {
-			const badFuncAsync = () => Promise.reject('I am an error message');
+			const badFuncAsync = async () => { throw 'I am an error message'; };
 			const badFuncSync = forceSync(badFuncAsync);
 	
 			expect(badFuncSync).toThrow(expect.error('"I am an error message"'));
