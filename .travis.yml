@@ -11,19 +11,20 @@ cache:
 stages:
   - name: test
   - name: deploy
+    if: tag IS present
 
 jobs:
   include:
     - stage: test
       script:
-        # NOTE: some eslint dependency update broke something for node 8.  It's really only important that the lint check
-        # passes *somewhere*, so I've disabled lint on node 8.
-        - "if [[ $TRAVIS_NODE_VERSION != '8' ]]; then yarn lint; fi"
+        - yarn lint
         - yarn test
 
     - stage: deploy
       node_js: '14'
-      before_script: |
+      script:
+        - yarn build
+      before_deploy: |
         function npm_tag() {
           CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
           PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
@@ -33,7 +34,8 @@ jobs:
             echo "latest"
           fi
         }
-      script:
-        - yarn build
-        - TAG=$(npm_tag)
-        - echo $TAG
+      deploy:
+        provider: npm
+        email: tannerntannern@gmail.com
+        api_key: $NPM_DEPLOY_TOKEN
+        tag: $(npm_tag)
