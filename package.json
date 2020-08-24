@@ -15,7 +15,8 @@
     "build": "tsc",
     "lint": "eslint --ext .ts,.md .",
     "codegen": "yarn lint --rule \"codegen/codegen: error\" --fix",
-    "test": "mocha"
+    "test": "mocha",
+    "release": "standard-version"
   },
   "dependencies": {
     "escape-string-regexp": "^4.0.0"
