@@ -1,0 +1,35 @@
+language: node_js
+node_js:
+  - '8'
+  - '10'
+  - '12'
+  - '14'
+
+cache:
+  directories:
+    - node_modules
+
+jobs:
+  include:
+    - stage: test
+      script:
+        # NOTE: some eslint dependency update broke something for node 8.  It's really only important that the lint check
+        # passes *somewhere*, so I've disabled lint on node 8.
+        - "if [[ $TRAVIS_NODE_VERSION != '8' ]]; then yarn lint; fi"
+        - yarn test
+
+# before_deploy: |
+#   function npm_tag() {
+#     CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+#     PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
+#     if [[ $CURRENT_VERSION =~ $PRERELEASE_TAG_REGEX ]]; then
+#       echo "${BASH_REMATCH[1]}"
+#     else
+#       echo "latest"
+#     fi
+#   }
+
+# deploy:
+#   skip_cleanup: true
+#   provider: npm
+#   email: tannerntannern@gmail.com
