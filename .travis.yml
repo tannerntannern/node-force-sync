@@ -13,25 +13,24 @@ script:
   - yarn test
   - yarn build
 
-jobs:
-  include:
-    - stage: deploy
-      if: tag IS present
-      node_js: '14'
-      script:
-        - yarn build
-      before_deploy: |
-        function npm_tag() {
-          CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
-          PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
-          if [[ $CURRENT_VERSION =~ $PRERELEASE_TAG_REGEX ]]; then
-            echo "${BASH_REMATCH[1]}"
-          else
-            echo "latest"
-          fi
-        }
-      deploy:
-        provider: npm
-        email: tannerntannern@gmail.com
-        api_key: $NPM_DEPLOY_TOKEN
-        tag: $(npm_tag)
+before_deploy: |
+  function npm_tag() {
+    CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+    PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
+    if [[ $CURRENT_VERSION =~ $PRERELEASE_TAG_REGEX ]]; then
+      echo "${BASH_REMATCH[1]}"
+    else
+      echo "latest"
+    fi
+  }
+
+deploy:
+  provider: npm
+  email: tannerntannern@gmail.com
+  api_key: $NPM_DEPLOY_TOKEN
+  tag: $(npm_tag)
+  skip_cleanup: true
+  on:
+    tags: true
+    node: '14'
+    repo: tannerntannern/node-force-sync
