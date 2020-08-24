@@ -8,6 +8,11 @@ cache:
   directories:
     - node_modules
 
+stages:
+  - name: test
+  - name: deploy
+    if: branch = master
+
 jobs:
   include:
     - stage: test
@@ -17,18 +22,17 @@ jobs:
         - "if [[ $TRAVIS_NODE_VERSION != '8' ]]; then yarn lint; fi"
         - yarn test
 
-# before_deploy: |
-#   function npm_tag() {
-#     CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
-#     PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
-#     if [[ $CURRENT_VERSION =~ $PRERELEASE_TAG_REGEX ]]; then
-#       echo "${BASH_REMATCH[1]}"
-#     else
-#       echo "latest"
-#     fi
-#   }
-
-# deploy:
-#   skip_cleanup: true
-#   provider: npm
-#   email: tannerntannern@gmail.com
+    - stage: deploy
+      if: node_js = 14
+      before_script: |
+        function npm_tag() {
+          CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+          PRERELEASE_TAG_REGEX="[0-9]+\.[0-9]+\.[0-9]+-([a-z]+)\.[0-9]+"
+          if [[ $CURRENT_VERSION =~ $PRERELEASE_TAG_REGEX ]]; then
+            echo "${BASH_REMATCH[1]}"
+          else
+            echo "latest"
+          fi
+        }
+      script:
+        - echo "hello"
