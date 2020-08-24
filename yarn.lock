@@ -1328,6 +1328,11 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
+expect-type@^0.7.9:
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/expect-type/-/expect-type-0.7.9.tgz#3036ebb8d09cb1975c764355c747a79d27467c2d"
+  integrity sha512-jvPxXvxzcXNOoRVEw5KtT41d3b9xmeUs6zThmWTDoRuoyK5dAwtsZhUGxF1AGZvgN3LHZ0LDsN0usmK5jtdL6w==
+
 expect@^26.0.0:
   version "26.4.0"
   resolved "https://registry.yarnpkg.com/expect/-/expect-26.4.0.tgz#34a0aae523343b0931ff1cf0aa972dfe40edfab4"

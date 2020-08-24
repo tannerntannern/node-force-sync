@@ -1,5 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'earljs';
+import { expectTypeOf } from 'expect-type';
 
 import forceSync from '../src';
 
@@ -53,6 +54,22 @@ describe('forceSync', () => {
 			const addSync = forceSync<[number, number], number>('function add(a, b){ return Promise.resolve(a + b); }');
 	
 			expect(addSync(1, 2)).toEqual(3);
+		});
+	});
+
+	describe('typing', () => {
+		it('should infer function types properly', () => {
+			const asyncFunc = async (a: string, b: number) => false;
+			const syncFunc = forceSync(asyncFunc);
+
+			expectTypeOf(syncFunc).toEqualTypeOf<(a: string, b: number) => boolean>();
+		});
+
+		it('should infer `(...args: any) => unknown` for code strings', () => {
+			const asyncFuncString = 'async () => {}';
+			const syncFunc = forceSync(asyncFuncString);
+
+			expectTypeOf(syncFunc).toEqualTypeOf<(...args: any[]) => unknown>();
 		});
 	});
 });
