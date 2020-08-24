@@ -1,6 +1,7 @@
 # node-force-sync
 [![npm version](https://badgen.net/npm/v/node-force-sync)](https://npmjs.com/package/node-force-sync)
 [![Build Status](https://travis-ci.org/tannerntannern/node-force-sync.svg?branch=master)](https://travis-ci.org/tannerntannern/node-force-sync)
+![Node Versions](https://badgen.net/npm/node/node-force-sync)
 [![Minified Size](https://badgen.net/bundlephobia/min/node-force-sync)](https://bundlephobia.com/result?p=node-force-sync)
 [![Conventional Commits](https://badgen.net/badge/conventional%20commits/1.0.0/yellow)](https://conventionalcommits.org)
 

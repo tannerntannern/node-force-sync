@@ -2,6 +2,9 @@
   "name": "node-force-sync",
   "version": "0.1.0",
   "description": "Forces an async function to run synchronously using a separate node process",
+  "engines": {
+    "node": ">=10"
+  },
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "module": "dist/index.js",
