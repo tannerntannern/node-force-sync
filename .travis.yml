@@ -16,6 +16,7 @@ script:
 jobs:
   include:
     - stage: deploy
+      if: tag IS present
       node_js: '14'
       script:
         - yarn build
