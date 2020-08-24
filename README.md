@@ -16,6 +16,7 @@
    - [forceSync(asyncFuncStr, config?)](#forcesyncasyncfuncstr-config)
    - [ForceSyncConfig](#forcesyncconfig)
 - [More Examples](#more-examples)
+   - [Synchronous HTTP Request](#synchronous-http-request)
 - [Transpilation Workarounds](#transpilation-workarounds)
    - [Adjust transpilation settings](#adjust-transpilation-settings)
    - [Use string version of `forceSync`](#use-string-version-of-forcesync)
@@ -37,7 +38,7 @@ Node.js itself provides no mechanism for forcing async code to block.  Thus, [th
 * transpilation (TypeScript, Babel) may break your function (but [workarounds](#transpilation-workarounds) are available)
 
 ## Usage
-<!-- codegen:start {preset: custom, source: ./codegen/copy.js, srcFile: test/readme/usage.test.ts, srcBlock: usage, destPrefix: '```typescript\n', replace: {'../../src': 'node-force-sync'}} -->
+<!-- codegen:start {preset: custom, source: ./codegen/copy.js, srcFile: test/readme.test.ts, srcBlock: usage, destPrefix: '```typescript\n', replace: {'__forceSync': "require('node-force-sync')"}} -->
 ```typescript
 const { forceSync } = require('node-force-sync');
 
@@ -128,7 +129,21 @@ const forceConfigDefaults: ForceSyncConfig = {
     - the output/errors that were able to be parsed.
 
 ## More Examples
-TODO
+### Synchronous HTTP Request
+<!-- codegen:start {preset: custom, source: codegen/copy.js, srcFile: test/readme.test.ts, srcBlock: syncHttp, destPrefix: '```typescript\n', replace: {__forceSync: "require('node-force-sync')"}} -->
+```typescript
+const { forceSync } = require('node-force-sync');
+
+const asyncGet = async (url: string) => {
+	const axios = require('axios');
+	return (await axios.get(url)).data;
+};
+
+const syncGet = forceSync(asyncGet);
+
+const response = syncGet('https://postman-echo.com/get?foo=bar');
+```
+<!-- codegen:end -->
 
 ## Transpilation Workarounds
 If you use TypeScript, Babel, or some other transpilation tool, chances are your function will fail to execute properly when forced to run synchronously.  The primary reason for this is code being generated out of scope of your function, which conflicts with one of the package's [major limitations](#limitations).  There are a few ways to work around this issue:
