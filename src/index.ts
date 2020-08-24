@@ -3,8 +3,7 @@ import { writeFileSync, unlinkSync } from 'fs';
 import { resolve } from 'path';
 import escapeStringRegex from 'escape-string-regexp';
 
-type Func<Args extends any[], Return extends any> = (...args: Args) => Return;
-
+// block: config
 export type ForceSyncConfig = {
 	tagOpenWrappers: [string, string],
 	tagCloseWrappers: [string, string],
@@ -12,9 +11,28 @@ export type ForceSyncConfig = {
 	nodeExecutable: string,
 	debug: boolean,
 };
+// endblock: config
 
-export function forceSync<A extends any[], R extends any>(asyncFunc: (...args: A) => Promise<R>, config?: Partial<ForceSyncConfig>): Func<A, R>;
-export function forceSync<A extends any[], R extends any>(funcStr: string, config?: Partial<ForceSyncConfig>): Func<A, R>;
+// TODO: default tmpFilePath to `/tmp` on unix-like systems?
+// TODO: make default nodeExecutable platform dependent?
+// block: defaultConfig
+const forceConfigDefaults: ForceSyncConfig = {
+	tagOpenWrappers: ['!!!', '!!!'],
+	tagCloseWrappers: ['!!!/', '!!!'],
+	tmpFilePath: '.',
+	nodeExecutable: 'node',
+	debug: false,
+};
+// endblock: defaultConfig
+
+// block: asyncFunc
+export function forceSync<A extends any[], R extends any>(asyncFunc: (...args: A) => Promise<R>, config?: Partial<ForceSyncConfig>): (...args: A) => R;
+// endblock: asyncFunc
+
+// block: funcStr
+export function forceSync<A extends any[], R extends any>(funcStr: string, config?: Partial<ForceSyncConfig>): (...args: A) => R;
+// endblock: funcStr
+
 export function forceSync(func: string | Function, config?: Partial<ForceSyncConfig>): Function {
 	const {
 		tagOpenWrappers,
@@ -22,13 +40,7 @@ export function forceSync(func: string | Function, config?: Partial<ForceSyncCon
 		tmpFilePath,
 		nodeExecutable,
 		debug,
-	} = defaults<ForceSyncConfig>(config ?? {}, {
-		tagOpenWrappers: ['!!!', '!!!'],
-		tagCloseWrappers: ['!!!/', '!!!'],
-		tmpFilePath: '.',		// TODO: default to `/tmp` on unix-like systems?
-		nodeExecutable: 'node',  // TODO: make default platform dependent?
-		debug: false,
-	});
+	} = defaults<ForceSyncConfig>(config ?? {}, forceConfigDefaults);
 
 	const outputOpener = makeTag('OUTPUT', tagOpenWrappers);
 	const outputCloser = makeTag('OUTPUT', tagCloseWrappers);
