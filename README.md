@@ -22,7 +22,7 @@
    - [Adjust transpilation settings](#adjust-transpilation-settings)
    - [Use string version of `forceSync`](#use-string-version-of-forcesync)
    - [Return `Promise` instead of using `async function`](#return-promise-instead-of-using-async-function)
-- [How It Works](#how-it-works)
+- [How It Woks](#how-it-works)
 <!-- codegen:end -->
 
 ## Overview
