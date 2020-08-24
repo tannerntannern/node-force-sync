@@ -11,7 +11,6 @@ cache:
 stages:
   - name: test
   - name: deploy
-    if: branch = master
 
 jobs:
   include:
@@ -23,7 +22,7 @@ jobs:
         - yarn test
 
     - stage: deploy
-      if: node_js = 14
+      node_js: '14'
       before_script: |
         function npm_tag() {
           CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
@@ -35,4 +34,6 @@ jobs:
           fi
         }
       script:
-        - echo "hello"
+        - yarn build
+        - TAG=$(npm_tag)
+        - echo $TAG
