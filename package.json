@@ -1,6 +1,6 @@
 {
   "name": "node-force-sync",
-  "version": "0.1.1",
+  "version": "0.1.2-beta.0",
   "description": "Forces an async function to run synchronously using a separate node process",
   "engines": {
     "node": ">=10"
