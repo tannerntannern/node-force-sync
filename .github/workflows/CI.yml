@@ -28,7 +28,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - id: prerelease_tag
-        uses: satackey/action-js-inline@v0.0.3
+        uses: satackey/action-js-inline@v0.0.2
         with:
           script: |
             const core = require('@actions/core');
