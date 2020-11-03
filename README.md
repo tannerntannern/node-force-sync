@@ -1,8 +1,8 @@
 # node-force-sync
 [version-badge]: https://badgen.net/npm/v/node-force-sync
 [version-link]: https://npmjs.com/package/node-force-sync
-[build-badge]: https://img.shields.io/github/workflow/status/tannerntannern/micro-observer/micro-observer%20CI
-[build-link]: https://github.com/tannerntannern/micro-observer/actions
+[build-badge]: https://img.shields.io/github/workflow/status/tannerntannern/node-force-sync/node-force-sync%20CI
+[build-link]: https://github.com/tannerntannern/node-force-sync/actions
 [![npm version][version-badge]][version-link]
 [![github actions][build-badge]][build-link]
 ![Node Versions](https://badgen.net/npm/node/node-force-sync)
